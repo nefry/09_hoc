@@ -1,11 +1,12 @@
 import React, { Component } from "react";
+import withSubmit from "../hoc/withSubmit";
+import withToggle from "../hoc/withToggle";
 
 class RegisterForm extends Component {
   state = {
     login: "",
     email: "",
-    password: "",
-    isToggled: false
+    password: ""
   };
 
   handleChange = e =>
@@ -13,22 +14,11 @@ class RegisterForm extends Component {
       [e.target.name]: e.target.value
     });
 
-  handleToggled = e =>
-    this.setState({
-      isToggled: Boolean(e.target.checked)
-    });
-
-  submit = e => {
-    e.preventDefault();
-    if (this.props.submit) {
-      this.props.submit(this.state);
-    }
-  };
-
   render() {
-    const { login, email, password, isToggled } = this.state;
+    const { login, email, password } = this.state;
+    const {isOn:isToggled, handleChange: handleToggled, submit} = this.props
     return (
-      <form onSubmit={this.submit} className="col-md-3" autoComplete="off">
+      <form onSubmit={submit(this.state)} className="col-md-3" autoComplete="off">
         <div className="form-group">
           <label>Email</label>
           <input
@@ -60,7 +50,7 @@ class RegisterForm extends Component {
         <div className="form-check">
           <input
             checked={isToggled}
-            onChange={this.handleToggled}
+            onChange={handleToggled}
             type="checkbox"
             name="isAgree"
             id="isAgree"
@@ -81,4 +71,4 @@ class RegisterForm extends Component {
   }
 }
 
-export default RegisterForm;
+export default withSubmit(withToggle(RegisterForm));

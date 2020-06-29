@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import withSubmit from "../hoc/withSubmit";
 
 class LoginForm extends Component {
   state = {
@@ -11,17 +12,11 @@ class LoginForm extends Component {
       [e.target.name]: e.target.value
     });
 
-  submit = e => {
-    e.preventDefault();
-    if (this.props.submit) {
-      this.props.submit(this.state);
-    }
-  };
 
   render() {
     const { email, password } = this.state;
     return (
-      <form onSubmit={this.submit} className="col-md-3" autoComplete="off">
+      <form onSubmit={this.props.submit(this.state)} className="col-md-3" autoComplete="off">
         <div className="form-group">
           <label>Email</label>
           <input
@@ -47,4 +42,4 @@ class LoginForm extends Component {
     );
   }
 }
-export default LoginForm;
+export default withSubmit(LoginForm);
